@@ -1,7 +1,9 @@
 # report.py
-from typing import Any
 import pandas as pd
-from sqlalchemy import create_engine, text
+from sqlalchemy import text
+from sqlalchemy.engine import Engine
+
+from db import _get_engine
 
 
 # ----------  Report-SQL  ----------
@@ -19,26 +21,10 @@ _SQL_REPORT = text("""
 """)
 
 
-# ----------  DB-Verbindung  ----------
-def _get_engine() -> Any:
-    user     = "etl_user"
-    password = "EtLpw123"
-    host     = "mariadb"
-    port     = "3306"
-    database = "etl_db"
-
-    if host == "localhost":
-        host = "127.0.0.1"
-
-    return create_engine(
-        f"mysql+mysqlconnector://{user}:{password}@{host}:{port}/{database}"
-    )
-
-
 # ----------  Report abrufen  ----------
 def fetch_report() -> pd.DataFrame:
     """Liefert den vollständigen Report als DataFrame."""
-    engine = _get_engine()
+    engine: Engine = _get_engine()
     with engine.connect() as conn:
         return pd.read_sql(_SQL_REPORT, conn)
 

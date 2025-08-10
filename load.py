@@ -1,24 +1,9 @@
 # load.py
-from typing import Any
 import pandas as pd
-from sqlalchemy import create_engine, text
+from sqlalchemy import text
+from sqlalchemy.engine import Engine
 
-
-# ----------  Verbindung  ----------
-def _get_engine() -> Any:
-    user     = "etl_user"
-    password = "EtLpw123"
-    host     = "mariadb"
-    port     = "3306"
-    database = "etl_db"
-
-    # Für TCP-Verbindung localhost → 127.0.0.1 erzwingen
-    if host == "localhost":
-        host = "127.0.0.1"
-
-    return create_engine(
-        f"mysql+mysqlconnector://{user}:{password}@{host}:{port}/{database}"
-    )
+from db import _get_engine
 
 
 # ----------  Laden in Staging  ----------
@@ -31,7 +16,7 @@ def load_to_staging_weather(
     """
     Legt die Staging-Tabelle für Wetterdaten neu an (DROP + CREATE) und lädt die Daten hinein.
     """
-    engine = _get_engine()
+    engine: Engine = _get_engine()
 
     with engine.begin() as conn:
         # Tabelle komplett neu anlegen
