@@ -1,0 +1,10 @@
+# Dockerfile.jupyterlab
+FROM jupyter/base-notebook:latest
+
+# Optional: Pakete installieren, die dein Dozent evtl. drin hatte
+RUN pip install pandas sqlalchemy mysql-connector-python requests prefect
+
+# Falls du extra Python-Pakete brauchst:
+# RUN pip install matplotlib seaborn ...
+
+WORKDIR /home/jovyan/work

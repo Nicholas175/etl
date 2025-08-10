@@ -1,0 +1,6 @@
+pandas
+requests
+sqlalchemy
+mysql-connector-python
+python-dotenv
+prefect
